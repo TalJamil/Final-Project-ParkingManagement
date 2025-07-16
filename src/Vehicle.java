@@ -10,10 +10,31 @@ public class Vehicle {
     private boolean available;         // האם הרכב נמצא בחניון (true = בפנים)
 
     // בנאי – יוצר רכב עם מספר רישוי ושם בעלים
-    public Vehicle(String licensePlate, String owner) {
-        this.licensePlate = licensePlate;
-        this.owner = owner;
+  // ...existing code...
+
+public Vehicle(String licensePlate, String owner) {
+    // אימות מספר רישוי - רק אותיות ומספרים
+    if (licensePlate == null || licensePlate.trim().isEmpty()) {
+        throw new IllegalArgumentException("מספר רישוי לא יכול להיות ריק");
     }
+    if (!licensePlate.matches("^[A-Za-z0-9]{3,8}$")) {
+        throw new IllegalArgumentException("מספר רישוי חייב להכיל רק אותיות ומספרים (3-8 תווים)");
+    }
+    
+    // אימות שם בעלים - רק אותיות ורווחים
+    if (owner == null || owner.trim().isEmpty()) {
+        throw new IllegalArgumentException("שם בעלים לא יכול להיות ריק");
+    }
+    if (!owner.matches("^[A-Za-z\\s]+$")) {
+        throw new IllegalArgumentException("שם בעלים חייב להכיל רק אותיות ורווחים");
+    }
+    
+    this.licensePlate = licensePlate.trim();
+    this.owner = owner.trim();
+    this.available = false;
+}
+
+// ...existing code...
 
     // מחזיר את מספר הרישוי
     public String getLicensePlate() {

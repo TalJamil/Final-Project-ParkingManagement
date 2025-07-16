@@ -95,7 +95,7 @@ public class ParkingStatistics {
         // 🆕 הצגת רווחים
         BigDecimal dailyRevenue = getDailyRevenue(allVehicles);
         BigDecimal weeklyRevenue = getWeeklyRevenue(allVehicles);
-        
+
         System.out.println("💰 רווחים יומיים: " + dailyRevenue + " ₪");
         System.out.println("💰 רווחים שבועיים: " + weeklyRevenue + " ₪");
         System.out.println("=====================================\n");

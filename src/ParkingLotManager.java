@@ -97,37 +97,49 @@ public class ParkingLotManager {
 
     // === שיטות Facade ===
 
-    public void checkInVehicle(Vehicle vehicle) {
-        vehicle.setEntryTime(LocalDateTime.now());
-        boolean success = parkVehicle(vehicle);
-        if (success) {
-            // 🆕 הוספת הרכב לרשימה הכללית
-            allVehicles.add(vehicle);
-            System.out.println("הרכב נכנס לחניון: " + vehicle.getLicensePlate());
-            notifyObservers(); // ⬅️ עדכון observers
-        }
-    }
+    // ...existing code...
 
-    public void checkOutVehicle(String licensePlate) {
-        for (ParkingSlot slot : slots) {
-            if (slot.isOccupied()) {
-                Vehicle v = slot.getCurrentVehicle();
-                if (v.getLicensePlate().equals(licensePlate) && v.getExitTime() == null) {
-                    v.setExitTime(LocalDateTime.now());
-                    var fee = FeeCalculator.calculateFee(v);
-                    System.out.println("הרכב יצא מהחניון. סכום לתשלום: " + fee + " ₪");
-                    notifyObservers(); // ⬅️ עדכון observers
-                    slot.removeVehicle();
-                    return;
-                }
+    public void checkInVehicle(Vehicle vehicle) {
+    vehicle.setEntryTime(LocalDateTime.now());
+    boolean success = parkVehicle(vehicle);
+    if (success) {
+        // 🆕 הוספת הרכב לרשימה הכללית
+        allVehicles.add(vehicle);
+        // 🆕 תיעוד כניסה בהיסטוריה
+        ParkingHistory.addEntryRecord(vehicle);
+        System.out.println("הרכב נכנס לחניון: " + vehicle.getLicensePlate());
+        notifyObservers(); // ⬅️ עדכון observers
+    }
+}
+
+ public void checkOutVehicle(String licensePlate) {
+    for (ParkingSlot slot : slots) {
+        if (slot.isOccupied()) {
+            Vehicle v = slot.getCurrentVehicle();
+            if (v.getLicensePlate().equals(licensePlate) && v.getExitTime() == null) {
+                v.setExitTime(LocalDateTime.now());
+                var fee = FeeCalculator.calculateFee(v);
+                // 🆕 תיעוד יציאה בהיסטוריה
+                ParkingHistory.addExitRecord(v, fee.toString());
+                System.out.println("הרכב יצא מהחניון. סכום לתשלום: " + fee + " ₪");
+                
+                // ⚠️ לא מסירים את הרכב מהתא - רק מסמנים שיצא
+                // slot.removeVehicle(); // 🚫 מחק את השורה הזו!
+                
+                notifyObservers(); // ⬅️ עדכון observers
+                return;
             }
         }
-        System.out.println("הרכב לא נמצא בחניון.");
     }
+    System.out.println("הרכב לא נמצא בחניון.");
+}
 
-    public void printFullReport() {
-        ParkingLog.displayFullReport(getVehicles(), getTotalSlots());
-    }
+    // ...existing code...
+
+   // תיקון של הפונקציה printFullReport
+public void printFullReport() {
+    ParkingLog.displayFullReport(allVehicles, getTotalSlots()); // 🔄 שינוי מ-getVehicles() ל-allVehicles
+}
 
     public void replicate() {
         DataReplication.replicateData(getVehicles());

@@ -22,29 +22,42 @@ public class ParkingUI {
         System.out.println(" 🚗  Welcome to the Parking System  🚗 ");
         System.out.println("=====================================");
 
+        // ...existing code...
+
         while (running) {
             System.out.println("\nSelect an option:");
             System.out.println("1. 🚘  Add vehicle");
             System.out.println("2. 🚪  Remove vehicle");
             System.out.println("3. 📋  Show parking slot status");
             System.out.println("4. 📊  Show full parking report");
-            System.out.println("5. 💾  Replicate parking data");
-            System.out.println("6. 📈  Show parking statistics"); // 🆕 כפתור חדש
+            System.out.println("5. 📈  Show parking statistics");
+            System.out.println("6. 📅  Show history by date"); // 🆕 אפשרות חדשה
             System.out.println("7. ❌  Exit system");
 
-            System.out.print("\nEnter your choice (1–7): ");
+            System.out.print("\nEnter your choice (1–8): ");
             String choice = scanner.nextLine();
 
             switch (choice) {
+                // ...existing code...
+
                 case "1":
-                    System.out.println("\n--- Add Vehicle ---");
                     System.out.print("Enter license plate: ");
-                    String license = scanner.nextLine();
+                    String licensePlate = scanner.nextLine();
                     System.out.print("Enter owner name: ");
-                    String owner = scanner.nextLine();
-                    Vehicle v = new Vehicle(license, owner);
-                    manager.checkInVehicle(v);
+                    String ownerName = scanner.nextLine();
+
+                    try {
+                        Vehicle vehicle = new Vehicle(licensePlate, ownerName);
+                        // 🔄 שימוש ב-checkInVehicle במקום parkVehicle
+                        manager.checkInVehicle(vehicle);
+                        System.out.println("✅ Vehicle parked successfully!");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("❌ Invalid input: " + e.getMessage());
+                        System.out.println("Please try again with valid data.");
+                    }
                     break;
+
+
 
                 case "2":
                     System.out.println("\n--- Remove Vehicle ---");
@@ -64,13 +77,17 @@ public class ParkingUI {
                     break;
 
                 case "5":
-                    System.out.println("\n--- Replicating Data ---");
-                    manager.replicate();
-                    break;
-
-                case "6": // 🆕 מקרה חדש לסטטיסטיקות
                     System.out.println("\n--- Parking Statistics ---");
                     ParkingStatistics.displayStatistics(manager.getAllVehicles());
+                    break;
+
+
+
+                case "6": // 🆕 הצגת היסטוריה לפי תאריך
+                    System.out.println("\n--- History by Date ---");
+                    System.out.print("Enter date (dd-MM-yyyy): ");
+                    String date = scanner.nextLine();
+                    ParkingHistory.displayHistoryByDate(date);
                     break;
 
                 case "7":
@@ -84,6 +101,6 @@ public class ParkingUI {
             }
         }
 
-        scanner.close();
+
     }
 }

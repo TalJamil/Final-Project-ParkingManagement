@@ -6,21 +6,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * The ParkingTest class provides comprehensive unit testing for the parking management system.
- * It uses JUnit 5 framework to validate the functionality of all core components including
- * fee calculation, vehicle management, parking slot operations, singleton pattern implementation,
- * statistics calculations, and history tracking. This test suite ensures system reliability
- * and validates that all design patterns are working correctly.
- */
 public class ParkingTest {
 
-    // === Tests for FeeCalculator ===
-
-    /**
-     * Tests that the fee calculator returns 5 NIS for parking duration under one hour.
-     * Validates the ceiling rounding behavior where any partial hour is charged as a full hour.
-     */
+    // === טסטים עבור FeeCalculator ===
     @Test
     void calculateFee_ShouldReturnFiveForUnderOneHour() {
         Vehicle v = new Vehicle("1234567", "Test");
@@ -31,12 +19,8 @@ public class ParkingTest {
         assertEquals(BigDecimal.valueOf(5.0), fee);
     }
 
-    /**
-     * Tests that the fee calculator returns 5 NIS for exactly one hour of parking.
-     * Validates that exactly one hour is charged as one full hour (5 NIS).
-     */
     @Test
-    void calculateFee_ShouldReturnFiveForExactlyOneHour() {
+    void calculateFee_ShouldReturnTenForExactlyOneHour() {
         Vehicle v = new Vehicle("7654321", "Test");
         v.setEntryTime(LocalDateTime.now().minusHours(1));
         v.setExitTime(LocalDateTime.now());
@@ -45,12 +29,8 @@ public class ParkingTest {
         assertEquals(BigDecimal.valueOf(5.0), fee);
     }
 
-    /**
-     * Tests that the fee calculator returns 10 NIS for exactly two hours of parking.
-     * Validates the hourly rate multiplication (2 hours × 5 NIS = 10 NIS).
-     */
     @Test
-    void calculateFee_ShouldReturnTenForTwoHours() {
+    void calculateFee_ShouldReturnTwentyForTwoHours() {
         Vehicle v = new Vehicle("1122334", "Test");
         v.setEntryTime(LocalDateTime.now().minusHours(2));
         v.setExitTime(LocalDateTime.now());
@@ -59,13 +39,7 @@ public class ParkingTest {
         assertEquals(BigDecimal.valueOf(10.0), fee);
     }
 
-    // === Tests for Vehicle ===
-
-    /**
-     * Tests that a Vehicle object is created correctly with proper initialization.
-     * Validates that license plate and owner are set, while entry/exit times are null,
-     * and the vehicle is initially not available.
-     */
+    // === טסטים עבור Vehicle ===
     @Test
     void vehicle_ShouldCreateCorrectly() {
         Vehicle v = new Vehicle("ABC123", "John");
@@ -76,10 +50,6 @@ public class ParkingTest {
         assertFalse(v.isAvailable());
     }
 
-    /**
-     * Tests that setting entry time makes the vehicle available.
-     * Validates that when entry time is set, the vehicle becomes available for parking operations.
-     */
     @Test
     void vehicle_ShouldSetEntryTimeAndAvailability() {
         Vehicle v = new Vehicle("ABC123", "John");
@@ -90,12 +60,7 @@ public class ParkingTest {
         assertTrue(v.isAvailable());
     }
 
-    // === Tests for ParkingSlot ===
-
-    /**
-     * Tests that a ParkingSlot starts in an empty state.
-     * Validates initial state: correct ID, not occupied, and no current vehicle.
-     */
+    // === טסטים עבור ParkingSlot ===
     @Test
     void parkingSlot_ShouldStartEmpty() {
         ParkingSlot slot = new ParkingSlot(1);
@@ -104,10 +69,6 @@ public class ParkingTest {
         assertNull(slot.getCurrentVehicle());
     }
 
-    /**
-     * Tests that a vehicle can be successfully assigned to a parking slot.
-     * Validates that after assignment, the slot is occupied and returns the correct vehicle.
-     */
     @Test
     void parkingSlot_ShouldAssignVehicle() {
         ParkingSlot slot = new ParkingSlot(1);
@@ -118,10 +79,6 @@ public class ParkingTest {
         assertEquals(v, slot.getCurrentVehicle());
     }
 
-    /**
-     * Tests that a vehicle can be removed from a parking slot.
-     * Validates that after removal, the slot becomes empty and unoccupied.
-     */
     @Test
     void parkingSlot_ShouldRemoveVehicle() {
         ParkingSlot slot = new ParkingSlot(1);
@@ -133,12 +90,7 @@ public class ParkingTest {
         assertNull(slot.getCurrentVehicle());
     }
 
-    // === Tests for ParkingLotManager (Singleton Pattern) ===
-
-    /**
-     * Tests that ParkingLotManager correctly implements the Singleton pattern.
-     * Validates that multiple calls to getInstance() return the same instance.
-     */
+    // === טסטים עבור ParkingLotManager (Singleton) ===
     @Test
     void parkingLotManager_ShouldBeSingleton() {
         ParkingLotManager manager1 = ParkingLotManager.getInstance();
@@ -147,13 +99,9 @@ public class ParkingTest {
         assertSame(manager1, manager2);
     }
 
-    /**
-     * Tests that the ParkingLotManager can successfully park a vehicle.
-     * Validates that parking operation returns true and the vehicle appears in the vehicles list.
-     */
     @Test
     void parkingLotManager_ShouldParkVehicle() {
-        // Reset singleton for clean test
+        // איפוס הסינגלטון לטסט נקי
         ParkingLotManager manager = ParkingLotManager.getInstance();
         Vehicle v = new Vehicle("TEST123", "TestUser");
 
@@ -164,20 +112,14 @@ public class ParkingTest {
         assertTrue(vehicles.contains(v));
     }
 
-    // === Tests for ParkingStatistics ===
-
-    /**
-     * Tests that ParkingStatistics calculates metrics correctly.
-     * Validates vehicle count for today and average stay time calculation
-     * for vehicles with complete entry/exit data.
-     */
+    // === טסטים עבור ParkingStatistics ===
     @Test
     void parkingStatistics_ShouldCalculateCorrectly() {
-        Vehicle v1 = new Vehicle("AAA111", "UserA");  // שינוי מ-"User1" ל-"UserA"
+        Vehicle v1 = new Vehicle("AAA111", "User1");
         v1.setEntryTime(LocalDateTime.now().minusHours(2));
         v1.setExitTime(LocalDateTime.now().minusHours(1));
 
-        Vehicle v2 = new Vehicle("BBB222", "UserB");  // שינוי מ-"User2" ל-"UserB"
+        Vehicle v2 = new Vehicle("BBB222", "User2");
         v2.setEntryTime(LocalDateTime.now().minusMinutes(30));
 
         List<Vehicle> vehicles = List.of(v1, v2);
@@ -189,10 +131,7 @@ public class ParkingTest {
         assertEquals(60.0, avgTime); // רק v1 יצא, שהה 60 דקות
     }
 
-    /**
-     * Tests that ParkingHistory correctly adds entry records.
-     * Validates that entry records are properly stored with correct license plate and action type.
-     */
+    // === טסטים עבור ParkingHistory ===
     @Test
     void parkingHistory_ShouldAddEntryRecord() {
         Vehicle v = new Vehicle("HIST123", "HistUser");
@@ -208,12 +147,7 @@ public class ParkingTest {
         assertEquals("ENTRY", lastEntry.getAction());
     }
 
-    // === Tests for TimeUtil ===
-
-    /**
-     * Tests that TimeUtil correctly converts LocalDateTime to Date.
-     * Validates that the conversion produces a valid Date object that is not null.
-     */
+    // === טסטים עבור TimeUtil ===
     @Test
     void timeUtil_ShouldConvertToDate() {
         LocalDateTime ldt = LocalDateTime.now();

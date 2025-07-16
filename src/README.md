@@ -4,7 +4,7 @@ This project simulates a comprehensive parking lot management system using objec
 
 ## Features
 
-- **Vehicle Tracking**: Entry and exit with timestamps
+- **core.Vehicle Tracking**: Entry and exit with timestamps
 - **Fee Calculation**: Automated parking fee calculation (5 NIS per hour)
 - **Slot Management**: Real-time tracking of parking slot availability
 - **Parking History**: Complete log of all parking operations
@@ -15,45 +15,45 @@ This project simulates a comprehensive parking lot management system using objec
 
 ## Design Patterns Implemented
 
-- **Singleton Pattern**: `ParkingLotManager` - Single system manager
-- **Observer Pattern**: `ParkingObserver`, `ParkingLog`, `DataReplication` - Automatic updates
-- **Strategy Pattern**: `FeeCalculator` - Parking fee calculation algorithm
-- **Factory Pattern**: Vehicle and parking slot creation
-- **Static Factory Method**: `TimeUtil`, `Report` - Static utility methods
-- **Facade Pattern**: `ParkingUI`, `ParkingLotManager` - Simplified interface to complex subsystems
+- **Singleton Pattern**: `core.ParkingLotManager` - Single system manager
+- **Observer Pattern**: `observer.ParkingObserver`, `observer.ParkingLog`, `observer.DataReplication` - Automatic updates
+- **Strategy Pattern**: `services.FeeCalculator` - Parking fee calculation algorithm
+- **Factory Pattern**: core.Vehicle and parking slot creation
+- **Static Factory Method**: `services.TimeUtil`, `services.Report` - Static utility methods
+- **Facade Pattern**: `ui.ParkingUI`, `core.ParkingLotManager` - Simplified interface to complex subsystems
 
 ## Project Structure
 
 ### Core Files:
 - `Main.java` — Application entry point
-- `ParkingUI.java` — Command-line user interface (Facade)
-- `Vehicle.java` — Vehicle representation with data validation
-- `ParkingSlot.java` — Parking slot representation
-- `ParkingLotManager.java` — Main system manager (Singleton + Facade)
+- `ui.ParkingUI.java` — Command-line user interface (Facade)
+- `core.Vehicle.java` — core.Vehicle representation with data validation
+- `core.ParkingSlot.java` — Parking slot representation
+- `core.ParkingLotManager.java` — Main system manager (Singleton + Facade)
 
 ### Helper Classes:
-- `FeeCalculator.java` — Parking fee calculation
-- `ParkingHistory.java` — Operation history management
-- `ParkingStatistics.java` — Statistics calculation
-- `TimeUtil.java` — Time utility functions
+- `services.FeeCalculator.java` — Parking fee calculation
+- `services.ParkingHistory.java` — Operation history management
+- `services.ParkingStatistics.java` — Statistics calculation
+- `services.TimeUtil.java` — Time utility functions
 
 ### Observer Pattern:
-- `ParkingObserver.java` — Observer interface
-- `ParkingLog.java` — Operation logging
-- `DataReplication.java` — Data replication
+- `observer.ParkingObserver.java` — Observer interface
+- `observer.ParkingLog.java` — Operation logging
+- `observer.DataReplication.java` — Data replication
 
 ### Reporting:
-- `Report.java` — System report generation (Facade)
+- `services.Report.java` — System report generation (Facade)
 
 ### Testing:
-- `ParkingTest.java` — 13 comprehensive unit tests
+- `test.ParkingTest.java` — 13 comprehensive unit tests
 
 ## System Menu
 
-1. **Add Vehicle** - Enter a vehicle into the parking lot
-2. **Remove Vehicle** - Exit a vehicle and calculate fees
+1. **Add core.Vehicle** - Enter a vehicle into the parking lot
+2. **Remove core.Vehicle** - Exit a vehicle and calculate fees
 3. **Show Parking Slot Status** - Display status of all parking slots
-4. **Show Full Parking Report** - Generate comprehensive system report
+4. **Show Full Parking services.Report** - Generate comprehensive system report
 5. **Replicate Parking Data** - Duplicate parking lot data
 6. **Show Parking Statistics** - Display usage statistics
 7. **Show Full History** - View complete operation history
@@ -71,7 +71,7 @@ This project simulates a comprehensive parking lot management system using objec
 ## How to Test
 
 ### In IDE:
-Right-click on `ParkingTest.java` → Run Tests
+Right-click on `test.ParkingTest.java` → Run Tests
 
 ### Command Line:
 ```bash
@@ -82,13 +82,13 @@ java -cp ".:junit-platform-console-standalone-1.8.2.jar" org.junit.platform.cons
 ## Test Coverage
 
 The test suite includes:
-- **FeeCalculator Tests**: Fee calculation validation
-- **Vehicle Tests**: Object creation and data validation
-- **ParkingSlot Tests**: Slot management operations
-- **ParkingLotManager Tests**: Singleton pattern and parking operations
-- **ParkingStatistics Tests**: Statistics calculation
-- **ParkingHistory Tests**: History tracking
-- **TimeUtil Tests**: Time conversion utilities
+- **services.FeeCalculator Tests**: Fee calculation validation
+- **core.Vehicle Tests**: Object creation and data validation
+- **core.ParkingSlot Tests**: Slot management operations
+- **core.ParkingLotManager Tests**: Singleton pattern and parking operations
+- **services.ParkingStatistics Tests**: Statistics calculation
+- **services.ParkingHistory Tests**: History tracking
+- **services.TimeUtil Tests**: Time conversion utilities
 
 ## Requirements
 
